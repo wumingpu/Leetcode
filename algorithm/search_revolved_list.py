@@ -27,16 +27,65 @@ class Solution(object):
         :type target: int
         :rtype: int
         """
+        # 旋转后的序列规律：
+        # 1. 中间数小于最右边的数，右半段有序；
+        # 2. 中间数大于最右边的数，左半段有序。
         print(nums)
         nums_len = len(nums)
         if nums_len == 0:
             return -1
-        head = nums[0]
-        tail = nums[nums_len-1]
 
-        # if target
-        for i in range(nums_len-1, 0, -1):
-            print(nums[i])
+        left_index = 0
+        right_index = nums_len - 1
+        while left_index <= right_index:
+            mid_index = int((right_index + left_index) / 2)
+            # print(mid_index)
+            if nums[mid_index] == target:
+                return mid_index
+            elif nums[mid_index] < nums[right_index]:
+                # 中间数小于右边数，右边有序
+                if (nums[mid_index] < target) and (nums[right_index] >= target):
+                    # 目标数在右边
+                    left_index = mid_index + 1
+                else:
+                    right_index = mid_index - 1
+            else:
+                # 中间数小于右边数，左边有序
+                if (nums[left_index] <= target) and (nums[mid_index] > target):
+                    # 目标在左边
+                    right_index = mid_index - 1
+                else:
+                    left_index = mid_index + 1
+        return -1
+
+
+# class Solution(object):
+#     def search(self, nums, target):
+#         """
+#         :type nums: List[int]
+#         :type target: int
+#         :rtype: int
+#         """
+#         # 递归，比上面的方法快两倍
+#         def chercher(l, target, debut, fin):
+#             if fin < debut:
+#                 return -1
+#             mid = int((fin + debut) / 2)
+#
+#             vmid = l[mid]
+#             if vmid == target:
+#                 return mid
+#
+#             if l[debut] <= target < l[mid]:
+#                 return chercher(l, target, debut, mid - 1)
+#             if l[mid] < target <= l[fin]:
+#                 return chercher(l, target, mid + 1, fin)
+#             if l[mid] > l[fin]:
+#                 return chercher(l, target, mid + 1, fin)
+#             else:
+#                 return chercher(l, target, debut, mid - 1)
+#
+#         return chercher(nums, target, 0, len(nums) - 1)
 
 
 if __name__ == '__main__':
