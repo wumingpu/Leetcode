@@ -23,6 +23,58 @@ class Solution(object):
         :type head: ListNode
         :rtype: ListNode
         """
+        dummy_node = ListNode(-1)
+        curr_node = dummy_node
+        ori_list = []
+        while head is not None:
+            # dummy_node.next = head
+            # curr_node = head
+            ori_list.append(head.val)
+            head = head.next
+
+        ori_len = len(ori_list)
+        for idx in range(ori_len-1, -1, -1):
+            curr_node.next = ListNode(ori_list[idx])
+            curr_node = curr_node.next
+
+        return dummy_node.next
+
+
+"""
+遍历求解
+"""
+# class Solution:
+#     def reverseList(self, head):
+#         """
+#         :type head: ListNode
+#         :rtype: ListNode
+#         """
+#         cur, prev = head, None
+#         while cur:
+#             cur.next, prev, cur = prev, cur, cur.next
+#         return prev
+
+
+"""
+递归求解
+"""
+# class Solution:
+#     def __reverse(self, prev, curr):
+#         if curr == None:
+#             return prev
+#         tmp = curr.next
+#         curr.next = prev
+#         prev = curr
+#         curr = tmp
+#         return self.__reverse(prev, curr)
+#
+#     def reverseList(self, head):
+#         if head == None:
+#             return None
+#         curr = head.next
+#         prev = head
+#         head.next = None
+#         return self.__reverse(prev, curr)
 
 
 def create_link_list(l_list):
@@ -37,3 +89,9 @@ def create_link_list(l_list):
 if __name__ == '__main__':
     s = Solution()
     ll1 = create_link_list([1, 2, 3, 4, 5])
+    result = s.reverseList(ll1)
+
+    while result is not None:
+        print(result.val)
+        result = result.next
+    # print(result)
